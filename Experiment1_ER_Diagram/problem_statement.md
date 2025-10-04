@@ -1,130 +1,125 @@
-# Experiment 1: Entity-Relationship (ER) Diagram
+# ER Diagram Workshop – Submission Template
 
-## 🎯 Objective:
-To understand and apply the concepts of ER modeling by creating an ER diagram for a real-world application.
+## Objective
+To understand and apply ER modeling concepts by creating ER diagrams for real-world applications.
 
-## 📚 Purpose:
-The purpose of this workshop is to gain hands-on experience in designing ER diagrams that visually represent the structure of a database including entities, relationships, attributes, and constraints.
-
----
-
-## 🧪 Choose One Scenario:
-
-### 🔹 Scenario 1: University Database
-Design a database to manage students, instructors, programs, courses, and student enrollments. Include prerequisites for courses.
-
-**User Requirements:**
-- Academic programs grouped under departments.
-- Students have admission number, name, DOB, contact info.
-- Instructors with staff number, contact info, etc.
-- Courses have number, name, credits.
-- Track course enrollments by students and enrollment date.
-- Add support for prerequisites (some courses require others).
+## Purpose
+Gain hands-on experience in designing ER diagrams that represent database structure including entities, relationships, attributes, and constraints.
 
 ---
 
-### 🔹 Scenario 2: Hospital Database
-Design a database for patient management, appointments, medical records, and billing.
+# Scenario A: City Fitness Club Management
 
-**User Requirements:**
-- Patient details including contact and insurance.
-- Doctors and their departments, contact info, specialization.
-- Appointments with reason, time, patient-doctor link.
-- Medical records with treatments, diagnosis, test results.
-- Billing and payment details for each appointment.
+**Business Context:**  
+FlexiFit Gym wants a database to manage its members, trainers, and fitness programs.
 
----
+**Requirements:**  
+- Members register with name, membership type, and start date.  
+- Each member can join multiple programs (Yoga, Zumba, Weight Training).  
+- Trainers assigned to programs; a program may have multiple trainers.  
+- Members may book personal training sessions with trainers.  
+- Attendance recorded for each session.  
+- Payments tracked for memberships and sessions.
 
-## 📝 Tasks:
-1. Identify entities, relationships, and attributes.
-2. Draw the ER diagram using any tool (draw.io, dbdiagram.io, hand-drawn and scanned).
-3. Include:
-   - Cardinality & participation constraints
-   - Prerequisites for University OR Billing for Hospital
-4. Explain:
-   - Why you chose the entities and relationships.
-   - How you modeled prerequisites or billing.
+### ER Diagram:
 
-# ER Diagram Submission: 
+<img width="1287" height="777" alt="Screenshot 2025-10-04 082357" src="https://github.com/user-attachments/assets/d1cd1524-50e5-46b7-97a6-f5aa70c2f714" />
 
-Student Name: SWETHA S V
-Student Register No: 212224230285
 
-## Scenario Chosen:
+## Entities and Attributes
 
-### Hospital
+#### 1.MEMBER-
+member_id (Primary Key)
 
-## ER Diagram:
+name
 
-![Workshop_Hospital](https://github.com/user-attachments/assets/546f1822-55e9-42e6-9751-f3395d4863a4)
+membershiptype
 
-## Entities and Attributes:
-Hospital:
-Attributes: Hospital_ID (Primary Key), Name, Contact_Details
+startdate
 
-Doctors:
-Attributes: Doctor_ID (Primary Key), Name, Hospital_ID (Foreign Key)
+#### 2.PROGRAM-
 
-Patients:
-Attributes: ID (Primary Key), Name, Desc, Doctor_ID (Foreign Key)
+programID (Primary Key)
 
-Appointment:
-Attributes: Appointment_ID (Primary Key), Date, Patient_ID (Foreign Key)
+programname
 
-Medical Record:
-Attributes: Report_No (Primary Key), Appointment_ID (Foreign Key), Dept
-...
+description
 
-## Relationships and Constraints:
-Contains (Hospital ↔ Doctors)
+schedule
 
-Cardinality: 1 Hospital : N Doctors
+#### 3.TRAINER-
 
-Participation: Total on Hospital (mandatory 1) and Partial on Doctors (a Doctor must belong to a Hospital)
+trainerID (Primary Key)
 
-Treats (Doctors ↔ Patients)
+name
 
-Cardinality: N Doctors : N Patients
+specialisation
 
-Participation: Partial for both (a Doctor may or may not treat many Patients; a Patient may be treated by multiple Doctors)
+experience
 
-Books (Patients ↔ Appointment)
+#### 4.PAYMENT-
 
-Cardinality: 1 Patient : N Appointments
+paymentID (Primary Key)
 
-Participation: Total on Appointment (every Appointment must be booked by a Patient)
+amount
 
-Receives (Patients ↔ Medical Record)
+paymentdate
 
-Cardinality: N Patients : N Medical Records
+paymenttype
 
-Participation: Partial for both (a Patient may have multiple Medical Records, a Record must belong to a Patient)
-...
+#### 5.SESSION-
 
-## Extension (Billing):
-- Explain how you modeled prerequisites or billing.
+sessionID (Primary Key)
 
-## Design Choices:
-Entities:
-Chose Hospital, Doctors, Patients, Appointment, and Medical Record to represent key parts of a healthcare system.
+date
 
-Relationships:
+time
 
-Hospital Contains Doctors (1:N) – A hospital has many doctors.
+type
 
-Doctor Treats Patient (N:N) – Doctors can treat many patients, and patients can have many doctors.
+#### 6.ATTENDENCE (Attendance)-
 
-Patient Books Appointment (1:N) – A patient can book multiple appointments.
+attendence_id (Primary Key)
 
-Patient Receives Medical Record (N:N) – Patients receive multiple medical records linked to appointments.
+status (values: present / absent)
 
-Assumptions:
+## Relationships and Constraints
+MEMBER — pays → PAYMENT
+One member can make many payments. Each payment belongs to one member.
+(1-to-Many)
 
-Each doctor works in one hospital.
+MEMBER — Enrollment → PROGRAM
+A member can enroll in multiple programs. A program can have many members.
+(Many-to-Many)
 
-Each appointment is booked by one patient.
+PROGRAM — teaches → TRAINER
+A trainer can teach multiple programs. A program can be taught by one or more trainers.
+(Many-to-Many)
 
-Medical records are created only after an appointment.
+MEMBER — attends → SESSION
+A member can attend many sessions. A session can be attended by many members.
+(Many-to-Many)
 
-## RESULT:
-Thus, this project effectively models a hospital management system through an ER diagram, clearly representing the relationships among hospitals, doctors, patients, appointments, and medical records.
+SESSION — has → ATTENDENCE
+A session can have many attendance records. Each attendance record belongs to a session.
+(1-to-Many)
+
+## Assumptions
+Each member must have a valid membership (with start date and type).
+
+A program may be taught by more than one trainer.
+
+Enrollment is required before a member can attend sessions of a program.
+
+Payments are linked directly to members, not to programs or sessions.
+
+Attendance is tracked per session per member.
+
+Status in attendance is limited to "present" or "absent".
+
+A trainer may teach multiple programs but must have at least one specialization.
+
+A member can attend multiple sessions but must be enrolled in at least one program.
+
+## Result
+Hence,the concepts of ER diagram is understood and applied by creating an ER diagram for a real world application.
